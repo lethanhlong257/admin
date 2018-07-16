@@ -1,0 +1,14 @@
+.App {
+  padding: 15px;
+}
+
+.menu {
+  padding: 0;
+}
+
+.menu > li {
+  list-style: none;
+  display: inline;
+  margin-right: 15px;
+}
+

@@ -1,0 +1,57 @@
+.background-header {
+    background: #1E5281;
+    color: white;
+    padding: 15px;
+    height: 50px;
+    font-weight: 600;
+}
+
+.dashboard-action {
+    float: right;
+}
+
+.dashboard-logo {
+    float: left;
+}
+
+.select {
+    background: none;
+    color: black;
+}
+
+.dashboard-title {
+    /* color: #1E5281; */
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.dashboard-bar {
+    height: 3px;
+    background: #1E5281;
+}
+
+
+.table {
+    
+    background: white;
+    border: solid #ddd 1px;
+}
+
+.textContentComponent {
+    padding: 15px;
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.dataTable {
+    padding: 5px 3px 3px 3px;
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.pagination{
+    margin: 0px;
+}
+
+
+
