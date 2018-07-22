@@ -7,6 +7,6 @@ import dashboardReducer from './pages/dashboard/dashboard.reducer';
 export default combineReducers({
   // dashboard reducer,
   auth: authReducer,
-  dashboardReducer: dashboardReducer,
+  dashboardReducer,
   routing: routerReducer,
 });

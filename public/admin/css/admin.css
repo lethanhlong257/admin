@@ -38,6 +38,10 @@ input.form-control {
     padding: 20px;
 }
 
+.modal-body {
+    overflow: auto;
+}
+
 .huge {
     font-size: 42px;
 }

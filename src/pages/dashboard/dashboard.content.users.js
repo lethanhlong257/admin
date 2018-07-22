@@ -1,26 +1,51 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { array, func, string } from 'prop-types';
+
 import DashboardModelHistoryBooking from './dashboard.model.historyBooking';
 import DashboardModelHistoryPost from './dashboard.model.historyPost';
 import DashboardModelStatus from './dashboard.model.status';
 import DashboardModelUserInfor from './dashboard.model.userInfor';
+import {
+  handleDataContent,
+  handleUserInforByID,
+  handleModelHistoryBooking,
+  handleModelUserActive,
+} from './dashboard.action';
 
+
+const USER = 'user';
 
 class DashboardContentUsers extends Component {
-  handleModelHistoryBooking = () => {
-    
+  static propTypes = {
+    handleUserAll: func.isRequired,
+    userAll: array.isRequired,
+    handleUserInforByID: func.isRequired,
+    user: func.isRequired,
+    handleModelHistoryBooking: func.isRequired,
+    historyBooking: array.isRequired,
+    handleModelUserActive: func.isRequired,
+    userID: string.isRequired,
+  }
+
+  handleModelHistoryBooking = (ID) => {
+    this.props.handleModelHistoryBooking(ID);
   }
 
   handleModelHistoryPost = () => {
-    
+
   }
 
-  handleModelHistoryActive = () => {
-    
+  handleModelUserActive = (ID) => {
+    this.props.handleModelUserActive(ID);
   }
 
-  handleModelHistoryUserInfor = () => {
-    
+  handleModelHistoryUserInfor = (ID) => {
+    this.props.handleUserInforByID(ID);
+  }
+
+  componentDidMount() {
+    this.props.handleUserAll(USER);
   }
 
   render() {
@@ -56,82 +81,65 @@ class DashboardContentUsers extends Component {
                 <th>#</th>
                 <th>#</th>
               </tr>
-              <tr>
-                <th>
-                  <button
-                    type="button"
-                    onClick={this.handleModelUserInfor}
-                    data-toggle="modal"
-                    data-target="#modalUserInfor"
-                    className="btn btn-link"
-                  >321123321
-                  </button>
-                </th>
-                <td>lethanhlong</td>
-                <th>lethanhlong@gmail.com</th>
-                <th>Le Thanh Long</th>
-                <th>01235122388</th>
-                <th>23/07/2018</th>
-                <th>
-                  <button
-                    type="button"
-                    onClick={this.handleModelHistoryBooking}
-                    data-toggle="modal"
-                    data-target="#modalHistoryBooking"
-                    className="btn btn-link"
-                  >View
-                  </button>
-                </th>
-                <th>
-                  <button
-                    type="button"
-                    onClick={this.handleModelHistoryPost}
-                    data-toggle="modal"
-                    data-target="#modalHistoryPost"
-                    className="btn btn-link"
-                  >View
-                  </button>
-                </th>
-                <th>
-                  <button
-                    type="button"
-                    onClick={this.handleModelActive}
-                    data-toggle="modal"
-                    data-target="#modalHistoryStatus"
-                    className="btn btn-link"
-                  >Active
-                  </button>
-                </th>
-              </tr>
-              <tr>
-                <th><button type="button" className="btn btn-link">321123321</button></th>
-                <td>lethanhlong</td>
-                <th>lethanhlong@gmail.com</th>
-                <th>Le Thanh Long</th>
-                <th>01235122388</th>
-                <th>23/07/2018</th>
-                <th><button type="button" className="btn btn-link">View</button></th>
-                <th><button type="button" className="btn btn-link">View</button></th>
-                <th><button type="button" className="btn btn-link">Active</button></th>
-              </tr>
-              <tr>
-                <th><button type="button" className="btn btn-link">321123321</button></th>
-                <td>lethanhlong</td>
-                <th>lethanhlong@gmail.com</th>
-                <th>Le Thanh Long</th>
-                <th>01235122388</th>
-                <th>23/07/2018</th>
-                <th><button type="button" className="btn btn-link">View</button></th>
-                <th><button type="button" className="btn btn-link">View</button></th>
-                <th><button type="button" className="btn btn-link">Active</button></th>
-              </tr>
+
+              {this.props.userAll.map((content) => {
+                return (
+                  <tr>
+                    <th>
+                      <button
+                        type="button"
+                        onClick={() => { return this.handleModelHistoryUserInfor(content.ID); }}
+                        data-toggle="modal"
+                        data-target="#modalUserInfor"
+                        className="btn btn-link"
+                      >{content.ID}
+                      </button>
+                    </th>
+                    <td>{content.username}</td>
+                    <th>{content.email}</th>
+                    <th>{content.name}</th>
+                    <th>{content.phone}</th>
+                    <th>{content.date}</th>
+                    <th>
+                      <button
+                        type="button"
+                        onClick={() => { return this.handleModelHistoryBooking(content.ID); }}
+                        data-toggle="modal"
+                        data-target="#modalHistoryBooking"
+                        className="btn btn-link"
+                      >View
+                      </button>
+                    </th>
+                    <th>
+                      <button
+                        type="button"
+                        
+                        data-toggle="modal"
+                        data-target="#modalHistoryPost"
+                        className="btn btn-link"
+                      >View
+                      </button>
+                    </th>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => { return this.handleModelUserActive(content.ID); }}
+                        data-toggle="modal"
+                        data-target="#modalHistoryStatus"
+                        className="btn btn-link"
+                      >{content.status ? content.status : 'actived'}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
 
-          <DashboardModelHistoryBooking />
+          <DashboardModelHistoryBooking historyBooking={this.props.historyBooking} />
           <DashboardModelHistoryPost />
-          <DashboardModelStatus />
-          <DashboardModelUserInfor />
+          <DashboardModelStatus userID={this.props.userID} />
+          <DashboardModelUserInfor user={this.props.user} />
 
         </div>
       </div>
@@ -140,6 +148,24 @@ class DashboardContentUsers extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    userAll: state.dashboardReducer.userAll,
+    user: state.dashboardReducer.userByID,
+    historyBooking: state.dashboardReducer.historyBooking,
+    userID: state.dashboardReducer.userID,
+  };
+}
 
-export default connect()(DashboardContentUsers);
+function mapDispatchToProps(dispatch) {
+  return {
+    handleUserAll: handleDataContent(dispatch),
+    handleUserInforByID: handleUserInforByID(dispatch),
+    handleModelHistoryBooking: handleModelHistoryBooking(dispatch),
+    handleModelUserActive: handleModelUserActive(dispatch),
+  };
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardContentUsers);
 

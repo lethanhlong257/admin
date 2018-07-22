@@ -1,9 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { array, func } from 'prop-types';
 
+import { handleDataContent } from './dashboard.action';
 
+const PLAYFIELD = 'playfield';
 class DashboardContenPlayfields extends Component {
+  static propTypes = {
+    handlePlayfieldAll: func.isRequired,
+    playfieldAll: array.isRequired,
+  }
+  componentDidMount() {
+    this.props.handlePlayfieldAll(PLAYFIELD);
+  }
   render() {
+    console.log(this.props.playfieldAll);
     return (
       <div className="dashboard-content-dashboard-wrap">
         <h1 className="dashboardContent-title">Playfields</h1>
@@ -32,43 +43,49 @@ class DashboardContenPlayfields extends Component {
                 <th>#</th>
                 <th>#</th>
               </tr>
-              <tr>
-                <th>
-                  <button
-                    type="button"
 
-                    data-toggle="modal"
-                    data-target="#modalFieldInfor"
-                    className="btn btn-link"
-                  >321123321
-                  </button>
-                </th>
-                <td>lethanhlong</td>
-                <td>lethanhlong@gmail.com</td>
-                <td>900000</td>
-                <td>23/07/2018</td>
-                <td>
-                  <button
-                    type="button"
+              {this.props.playfieldAll.map((content) => {
+                return (
+                  <tr>
+                    <th>
+                      <button
+                        type="button"
 
-                    data-toggle="modal"
-                    data-target="#modalHistoryBooking"
-                    className="btn btn-link"
-                  >View
-                  </button>
-                </td>
+                        data-toggle="modal"
+                        data-target="#modalFieldInfor"
+                        className="btn btn-link"
+                      >{content.ID}
+                      </button>
+                    </th>
+                    <td>{content.typeOfField}</td>
+                    <td>{content.ownerID}</td>
+                    <td>{content.price}</td>
+                    <td>N/A</td>
+                    <td>
+                      <button
+                        type="button"
 
-                <td>
-                  <button
-                    type="button"
+                        data-toggle="modal"
+                        data-target="#modalHistoryBooking"
+                        className="btn btn-link"
+                      >View
+                      </button>
+                    </td>
 
-                    data-toggle="modal"
-                    data-target="#modalHistoryStatus"
-                    className="btn btn-link"
-                  >Active
-                  </button>
-                </td>
-              </tr>
+                    <td>
+                      <button
+                        type="button"
+
+                        data-toggle="modal"
+                        data-target="#modalHistoryStatus"
+                        className="btn btn-link"
+                      >{content.status ? content.status : 'actived'}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+
             </tbody>
           </table>
         </div>
@@ -79,6 +96,18 @@ class DashboardContenPlayfields extends Component {
   }
 }
 
+function mapStateToProps(state) {
+  return {
+    playfieldAll: state.dashboardReducer.playfieldAll,
+  };
+}
 
-export default connect()(DashboardContenPlayfields);
+function mapDispatchToProps(dispatch) {
+  return {
+    handlePlayfieldAll: handleDataContent(dispatch),
+  };
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(DashboardContenPlayfields);
 

@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { BarChart, XAxis, YAxis, CartesianGrid, Tooltip, Bar, Legend } from 'recharts';
+import { array, func } from 'prop-types';
 
-const data = [
-  { name: 'A', booked_times: 0 },
-  { name: 'B', booked_times: 5 },
-  { name: 'C', booked_times: 3 },
-  { name: 'D', booked_times: 10 },
-  { name: 'E', booked_times: 9 },
-  { name: 'F', booked_times: 20 },
-  { name: 'G', booked_times: 1 },
-  { name: 'H', booked_times: 32 },
-  { name: 'Y', booked_times: 22 },
-  { name: 'K', booked_times: 5 },
-
-];
-
+import { handleTop10 } from './dashboard.action';
 
 class DashboardChartTime extends Component {
+  static propTypes = {
+    top10Booking: array.isRequired,
+    handleTop10: func.isRequired,
+  }
+
+  componentDidMount() {
+    this.props.handleTop10();
+  }
+
   render() {
     return (
       <div className="dashboard-chart-time-wrap">
@@ -28,13 +24,13 @@ class DashboardChartTime extends Component {
           </div>
           <div className="card-body">
 
-            <BarChart width={700} height={350} data={data}>
+            <BarChart width={700} height={350} data={this.props.top10Booking}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="booked_times" fill="#337ab7" />
+              <Bar dataKey="count" fill="#337ab7" />
             </BarChart>
 
           </div>
@@ -45,6 +41,18 @@ class DashboardChartTime extends Component {
   }
 }
 
+function mapStateToProp(state) {
+  return {
+    top10Booking: state.dashboardReducer.top10Booking,
+  };
+}
 
-export default connect()(DashboardChartTime);
+
+function mapDispatchToProps(dispatch) {
+  return {
+    handleTop10: handleTop10(dispatch),
+  };
+}
+
+export default connect(mapStateToProp, mapDispatchToProps)(DashboardChartTime);
 

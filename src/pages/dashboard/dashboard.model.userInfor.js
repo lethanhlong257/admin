@@ -8,6 +8,7 @@ class DashboardModelStatus extends Component {
 
     }
     render() {
+      const { user } = this.props;
       return (
         <div className="modal fade" id="modalUserInfor">
           <div className="modal-dialog modal-lg">
@@ -19,7 +20,11 @@ class DashboardModelStatus extends Component {
               </div>
 
               <div className="modal-body">
-                  Modal body..
+                <p><strong>Name:</strong> {user.name}</p>
+                <p><strong>Address:</strong>  {user.address}</p>
+                <p><strong>Phone:</strong>  {user.phone}</p>
+                <p><strong>Email: </strong>{user.email}</p>
+                <p><strong>Status: </strong>{user.status}  </p>
               </div>
 
               <div className="modal-footer">

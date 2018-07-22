@@ -52,8 +52,6 @@ class Dashboard extends Component {
               {this.contentRender()}
             </Col>
           </Row>
-
-
           <Row className="dashboard-footer">
                     Footer of dashboard
           </Row>

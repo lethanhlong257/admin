@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { string } from 'prop-types';
+import { string, number } from 'prop-types';
 
 class DashboardContentTabTable extends Component {
   static propTypes = {
     typeTable: string.isRequired,
+    count: number.isRequired,
   }
   color(typeTable) {
     switch (typeTable.toLowerCase()) {
@@ -59,7 +60,7 @@ class DashboardContentTabTable extends Component {
                 <i className={this.color(this.props.typeTable).panelIcon} />
               </div>
               <div className="col-xs-9 text-right">
-                <div className="huge">26</div>
+                <div className="huge">{this.props.count}</div>
                 <div>{this.props.typeTable}</div>
               </div>
             </div>

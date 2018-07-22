@@ -1,38 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area } from 'recharts';
+import { func, array } from 'prop-types';
 
-const data = [
-  { name: '0h', times: 0 },
-  { name: '1h', times: 0 },
-  { name: '2h', times: 0 },
-  { name: '3h', times: 0 },
-  { name: '4h', times: 1 },
-  { name: '5h', times: 0 },
-  { name: '6h', times: 1 },
-  { name: '7h', times: 2 },
-  { name: '8h', times: 5 },
-  { name: '9h', times: 7 },
-  { name: '10h', times: 2 },
-  { name: '11h', times: 2 },
-  { name: '12h', times: 2 },
-  { name: '13h', times: 4 },
-  { name: '14h', times: 6 },
-  { name: '15h', times: 8 },
-  { name: '16h', times: 20 },
-  { name: '17h', times: 20 },
-  { name: '18h', times: 36 },
-  { name: '19h', times: 32 },
-  { name: '20h', times: 23 },
-  { name: '21h', times: 12 },
-  { name: '22h', times: 10 },
-  { name: '23h', times: 2 },
-
-];
-
+import { handleCountBookingByHour } from './dashboard.action';
 
 class DashboardChartTime extends Component {
+  static propTypes = {
+    handleCountBookingByHour: func.isRequired,
+    bookingCountByHour: array.isRequired,
+  }
+
+  async componentDidMount() {
+
+    const bookingCountByHourArray = () => {
+      return (
+        new Promise((resolve, reject) => {
+          const countBooking = this.props.handleCountBookingByHour();
+          if (countBooking === undefined) reject(Error);
+          resolve(countBooking);
+        })
+      );
+    };
+    await bookingCountByHourArray();
+  }
+
   render() {
     return (
       <div className="dashboard-chart-time-wrap">
@@ -45,7 +37,7 @@ class DashboardChartTime extends Component {
             <p>The density time that was booked a day</p>
 
 
-            <AreaChart width={700} height={250} data={data}>
+            <AreaChart width={700} height={250} data={this.props.bookingCountByHour}>
               <defs>
 
                 <linearGradient id="timesColor" x1="0" y1="0" x2="0" y2="1">
@@ -69,6 +61,19 @@ class DashboardChartTime extends Component {
   }
 }
 
+function mapStateToProp(state) {
+  return {
+    bookingCountByHour: state.dashboardReducer.bookingCountByHour,
+  };
+}
 
-export default connect()(DashboardChartTime);
+
+function mapDispatchToProps(dispatch) {
+  return {
+    handleCountBookingByHour: handleCountBookingByHour(dispatch),
+  };
+}
+
+
+export default connect(mapStateToProp, mapDispatchToProps)(DashboardChartTime);
 

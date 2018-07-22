@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { boolean } from 'prop-types';
+import { string, func } from 'prop-types';
+
+import { userActive } from './dashboard.action';
 
 
 class DashboardModelStatus extends Component {
     static propTypes = {
-
+      userID: string.isRequired,
+      userActive: func.isRequired,
     }
+
+    userActive = (userID, action) => {
+      this.props.userActive(userID, action);
+    }
+
+
     render() {
       return (
         <div className="modal fade" id="modalHistoryStatus">
@@ -19,7 +28,20 @@ class DashboardModelStatus extends Component {
               </div>
 
               <div className="modal-body">
-                  Modal body..
+                <button
+                  type="button"
+                  onClick={() => { this.userActive(this.props.userID, 'active'); }}
+                  className="btn btn-success btn-block"
+                >
+                  Active
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { this.userActive(this.props.userID, 'banded'); }}
+                  className="btn btn-basic btn-block"
+                >
+                  Banded
+                </button>
               </div>
 
               <div className="modal-footer">
@@ -37,14 +59,13 @@ class DashboardModelStatus extends Component {
 
 function mapStateToProp(state) {
   return {
-
   };
 }
 
 
 function mapDispatchToProps(dispatch) {
   return {
-
+    userActive: userActive(dispatch),
   };
 }
 
